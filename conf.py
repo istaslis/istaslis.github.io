@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 import time
 
-GITHUB_SOURCE_BRANCH = 'master'
-GITHUB_DEPLOY_BRANCH = 'gh-pages'
+GITHUB_SOURCE_BRANCH = 'source'#'master'
+GITHUB_DEPLOY_BRANCH = 'master'#'gh-pages'
 GITHUB_REMOTE_NAME = 'origin'
 
 # !! This is the configuration of Nikola. !! #
