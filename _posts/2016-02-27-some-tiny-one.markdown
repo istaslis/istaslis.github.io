@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 title: Some tiny one
 layout: post
 ---
