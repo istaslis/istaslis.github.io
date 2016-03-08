@@ -1,9 +1,16 @@
+---
+layout: post
+title: Dynamic programming
+---
+
 ##Dynamic programming
 
 >Remember your Past.
 
  If the given problem can be broken up in to smaller sub-problems and these smaller subproblems are in turn divided in to still-smaller ones, and in this process, if you observe some over-lappping subproblems, then its a big hint for DP
  the optimal solutions to the subproblems contribute to the optimal solution of the given problem 
+
+
 
 1. **(Top-down) Memoization**  Start solving the given problem by breaking it down. If you see that the problem has been solved already, then just return the saved answer.
 2. **(Bottom-up) Dynamic Programming** Analyze the problem and see the order in which the sub-problems are solved and start solving from the trivial subproblem, up towards the given problem. 
