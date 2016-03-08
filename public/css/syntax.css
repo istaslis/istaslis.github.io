@@ -64,7 +64,7 @@
 .css .o + .nt,
 .css .nt + .nt { color: #999; }
 
-pre {
+.highlight pre {
     counter-reset: line-numbering;
     white-space: pre;
     overflow-x: auto;
