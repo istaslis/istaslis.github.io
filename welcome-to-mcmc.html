@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+		<title>quriosity</title>
+
+		<!-- CSS -->
+		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
+		<link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Abril+Fatface|PT+Sans:400,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet">
+
+		<link rel="stylesheet" href="/theme/css/poole.css" />
+		<link rel="stylesheet" href="/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/theme/css/syntax.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+		<!-- RSS -->
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+	</head>
+
+	<body class="theme-base-01">
+<div class="sidebar">
+	<div class="container sidebar-sticky">
+		<div class="sidebar-about">
+
+			<h1>
+				<a href="/">
+					<img class="profile-picture" src="/images/">
+					quriosity
+				</a>
+			</h1>
+			<p class="lead"></p>
+			<p class="lead"> </p>
+			<p></p>
+		</div>
+		<nav class="sidebar-nav">
+			<a class="sidebar-nav-item" href="mailto:guilherme.sft@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://fr.linkedin.com/in/istaslis">
+				<i class="fa fa-linkedin"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://twitter.com/istaslis">
+				<i class="fa fa-twitter"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://www.facebook.com/stas.lisniak">
+				<i class="fa fa-facebook"></i>
+			</a>
+			<a class="sidebar-nav-item" href="">
+				<i class="fa fa-feed"></i>
+			</a>
+		</nav>
+	</div>
+</div>		<div class="content container">
+<div class="post">
+	<h1 class="post-title">"Welcome to MCMC!"</h1>
+	<span class="post-date">Sun 28 February 2016</span>
+	<h1>MCMC integration</h1>
+<h2>General thoughts on integration</h2>
+<p>Markov chain Monte-Carlo methods entered almost every aspect of the science where simulations are needed. Basically, the problem they solve is to generate random numbers according to some p.d.f. And there are many practical reasons one needs to do that - from finding energy minimum of complex system to numerical integration, which I am going to discuss here.</p>
+<p>In general, we have to calculate the following: $$\int_{a}^{b} f(x_1,x_2,...,x_N) dx_{1}dx_{2}...dx_{N}$$
+When the number of dimensions N is small enough, we can calculate it using standard numerical techniques. How small is small enough? Let's illustrate with $$\int_{0}^{2\pi} \prod_{i=1}^{k} \left| \frac{sin(x_i)}{x_i} \right| dx_i $$
+for some values of k. One can easily note the cheating here - integral is easily factorizable and easily computable given value for $\int_{0}^{2\pi} \left| \frac{sin(x)}{x} \right| dx $.</p>
+<div class="highlight"><pre><span class="err">#</span><span class="nx">imports</span> <span class="nx">we</span> <span class="nx">will</span> <span class="nx">need</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">future</span>
+<span class="o">%</span><span class="nx">matplotlib</span> <span class="nx">inline</span>
+<span class="kr">import</span> <span class="nx">numpy</span> <span class="nx">as</span> <span class="nx">np</span>
+<span class="kr">import</span> <span class="nx">matplotlib</span><span class="p">.</span><span class="nx">pyplot</span> <span class="nx">as</span> <span class="nx">plt</span>
+<span class="kr">import</span> <span class="nx">scipy</span><span class="p">.</span><span class="nx">integrate</span> <span class="nx">as</span> <span class="nx">integrate</span>
+<span class="kr">import</span> <span class="nx">math</span>
+<span class="nx">from</span> <span class="nx">mpl_toolkits</span><span class="p">.</span><span class="nx">mplot3d</span> <span class="kr">import</span> <span class="nx">Axes3D</span>
+<span class="nx">from</span> <span class="nx">matplotlib</span> <span class="kr">import</span> <span class="nx">cm</span>
+
+
+<span class="err">#</span><span class="nx">Here</span> <span class="nx">is</span> <span class="nx">our</span> <span class="kd">function</span> <span class="k">in</span> <span class="mi">1</span><span class="nx">d</span>
+<span class="nx">x</span><span class="o">=</span><span class="nx">np</span><span class="p">.</span><span class="nx">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nx">plt</span><span class="p">.</span><span class="nx">plot</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">abs</span><span class="p">(</span><span class="nx">np</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="o">/</span><span class="nx">x</span><span class="p">))</span>
+
+
+
+
+<span class="cp">[</span><span class="o">&lt;</span><span class="nx">matplotlib.lines.Line2D</span> <span class="nx">at</span> <span class="mh">0x12e1b35d0</span><span class="o">&gt;</span><span class="cp">]</span>
+</pre></div>
+
+
+<p><img alt="png" src="MCMC_files/MCMC_2_1.png" /></p>
+<div class="highlight"><pre><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">mx</span><span class="p">,</span><span class="n">my</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">z</span><span class="o">=</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span><span class="o">/</span><span class="n">mx</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">my</span><span class="p">)</span><span class="o">/</span><span class="n">my</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="err">&#39;</span><span class="mi">3</span><span class="n">d</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span><span class="n">my</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">cm</span><span class="p">.</span><span class="n">coolwarm</span><span class="p">(</span><span class="n">z</span><span class="p">),</span><span class="n">shade</span><span class="o">=</span><span class="n">False</span><span class="p">,</span>
+                       <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">antialiased</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="MCMC_files/MCMC_3_0.png" /></p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span>  <span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">x1</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">integrate</span><span class="p">.</span><span class="n">quad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span>
+
+<span class="mi">10000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">70.8</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+
+
+
+<span class="n">def</span> <span class="n">f2</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span>  <span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="n">x2</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">integrate</span><span class="p">.</span><span class="n">nquad</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">]])</span>
+
+<span class="mi">100</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">8.67</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span>
+
+
+
+<span class="n">def</span> <span class="n">f3</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span>  <span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="n">x2</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span><span class="o">/</span><span class="n">x3</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">integrate</span><span class="p">.</span><span class="n">nquad</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">]])</span>
+
+<span class="mi">1</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mi">769</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span>
+
+
+
+<span class="n">def</span> <span class="n">f4</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">,</span><span class="n">x4</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span>  <span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="n">x2</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x3</span><span class="p">)</span><span class="o">/</span><span class="n">x3</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x4</span><span class="p">)</span><span class="o">/</span><span class="n">x4</span><span class="p">)</span>
+<span class="o">%</span><span class="n">time</span> <span class="n">integrate</span><span class="p">.</span><span class="n">nquad</span><span class="p">(</span><span class="n">f4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">]])</span>
+
+<span class="n">CPU</span> <span class="n">times</span><span class="o">:</span> <span class="n">user</span> <span class="mi">1</span><span class="n">min</span> <span class="mi">5</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="o">:</span> <span class="mi">734</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="o">:</span> <span class="mi">1</span><span class="n">min</span> <span class="mi">5</span><span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="o">:</span> <span class="mi">1</span><span class="n">min</span> <span class="mi">6</span><span class="n">s</span>
+
+
+
+
+
+<span class="p">(</span><span class="mf">27.29568732908961</span><span class="p">,</span> <span class="mf">3.019806626980426e-13</span><span class="p">)</span>
+
+
+
+
+<span class="cp">#Check the computation: integral of f4 is just of f1^4</span>
+<span class="n">integrate</span><span class="p">.</span><span class="n">nquad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">4</span>
+
+
+
+
+<span class="mf">27.29568732908961</span>
+</pre></div>
+
+
+<p>As we can see, adding a new dimension slows down computation almost 100x! And there is a simple explanation for that: in order to integrate a function you divide interval (in this example $[0,2\pi]$) by N bins (here it's around 100) and then sum across the bins. As a number of dimensions k grows, total number of bins (hence the computation) grows like $N^k$!!! But if you need 10-dimensional integration you have to sum $10^{20}$ values! That's impossible!</p>
+<h2>Sampling to the resque!</h2>
+<p>As you can see in 3d plot above, multidimensional functions tend to be more peaked hence lots of computational power is simply wasted in the areas where function is around 0. </p>
+<p>Imagine you are discovering a new city. Would you go block-by-block visiting every corner? Probably not. You would rather selected the most interesting places and visited them first. You can even create a list of places, sort it by fun you can get from the place and went through this list. In the real world it is how I do that. But the computer can do even better: go to the place with probability, proportional to the fun you get there. Why? Because if you go by sorted list, you never know how much fun is in the tail of the list (but you know that each entry is less interesting that you are at now, so it's fine in real life). On the other hand, probabilistic solutions allow us to estimate the result at any given point, and improve the result by continuing the process.</p>
+<p>Let's get back to the problem of the integration and formulate it in terms of a probabilistic process.
+$$\int_{a}^{b} f(x) dx =  (b-a) \int_{a}^{b} f(x) \frac{1}{b-a} dx = (b-a) \int_{a}^{b} f(x) p(x) dx = (b-a) E_{p}[f] $$
+where $p(x) = \frac{1}{b-a}$ is a probability distribution function (pdf) of a uniform random variable. The above line states the following: instead of summing all infinitesimal $f(x) dx$ we can average $f(x)$ along possible values of $x$.</p>
+<p>Sometimes on your way </p>
+<p>Imagine we can visit the places with higher values of the $f(x_{i})$ more often than to the places with lower $f(x_{i})$. This will allow us to </p>
+</div>
+		</div>
+	</body>
+</html>

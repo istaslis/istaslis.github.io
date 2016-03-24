@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+		<title>quriosity</title>
+
+		<!-- CSS -->
+		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
+		<link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Abril+Fatface|PT+Sans:400,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet">
+
+		<link rel="stylesheet" href="/theme/css/poole.css" />
+		<link rel="stylesheet" href="/theme/css/hyde.css" />
+		<link rel="stylesheet" href="/theme/css/syntax.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+		<!-- RSS -->
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+	</head>
+
+	<body class="theme-base-01">
+<div class="sidebar">
+	<div class="container sidebar-sticky">
+		<div class="sidebar-about">
+
+			<h1>
+				<a href="/">
+					<img class="profile-picture" src="/images/">
+					quriosity
+				</a>
+			</h1>
+			<p class="lead"></p>
+			<p class="lead"> </p>
+			<p></p>
+		</div>
+		<nav class="sidebar-nav">
+			<a class="sidebar-nav-item" href="mailto:guilherme.sft@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://fr.linkedin.com/in/istaslis">
+				<i class="fa fa-linkedin"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://twitter.com/istaslis">
+				<i class="fa fa-twitter"></i>
+			</a>
+			<a class="sidebar-nav-item" href="https://www.facebook.com/stas.lisniak">
+				<i class="fa fa-facebook"></i>
+			</a>
+			<a class="sidebar-nav-item" href="">
+				<i class="fa fa-feed"></i>
+			</a>
+		</nav>
+	</div>
+</div>		<div class="content container">
+<div class="post">
+	<h1 class="post-title">Dynamic programming</h1>
+	<span class="post-date">Sat 03 December 2016</span>
+	<h2>Dynamic programming</h2>
+<blockquote>
+<p>Remember your Past.</p>
+</blockquote>
+<p>If the given problem can be broken up in to smaller sub-problems and these smaller subproblems are in turn divided in to still-smaller ones, and in this process, if you observe some over-lappping subproblems, then its a big hint for DP
+ the optimal solutions to the subproblems contribute to the optimal solution of the given problem </p>
+<ol>
+<li><strong>(Top-down) Memoization</strong>  Start solving the given problem by breaking it down. If you see that the problem has been solved already, then just return the saved answer.</li>
+<li><strong>(Bottom-up) Dynamic Programming</strong> Analyze the problem and see the order in which the sub-problems are solved and start solving from the trivial subproblem, up towards the given problem. </li>
+</ol>
+<p>Difference with respect to divide-and-conquer: in d-and-c the problem is divided by non-overlapping subproblems</p>
+<p>Useful: $C(n,m) = C(n-1,m) + C(n-1,m-1)$</p>
+<h3>Problem : Minimum Steps to One</h3>
+<p>On a positive integer, you can perform any one of the following 3 steps. </p>
+<ol>
+<li>Subtract 1 from it. ( n = n - 1 )  , </li>
+<li>If its divisible by 2, divide by 2. ( if n % 2 == 0 , then n = n / 2  )  , </li>
+<li>If its divisible by 3, divide by 3. ( if n % 3 == 0 , then n = n / 3  ). </li>
+</ol>
+<p>Given a positive integer n, find the minimum number of steps that takes n to 1
+eg: </p>
+<ol>
+<li>For n = 1 , output: 0</li>
+<li>For n = 4 , output: 2  ( 4  /2 = 2  /2 = 1 )    </li>
+<li>For n = 7 , output: 3  (  7  -1 = 6   /3 = 2   /2 = 1 )</li>
+</ol>
+<h4>Recursive solution</h4>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">N</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">N</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">N</span><span class="o">%</span><span class="mi">3</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">r</span>
+<span class="o">&gt;&gt;</span> <span class="n">f</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">f</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">100</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">19.2</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<p>But many f(N) are recalculated multiple times. Solution - remember them.</p>
+<h4>DP solution</h4>
+<p>Main idea: remember any intermediate solution in the temporary array <code>M</code>, and don't repeat calculations if there is a solution already.</p>
+<p>Here in order to use timing command, I wrapped DP solution into separate function which initializes array first.</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">fDPrun</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">fDP</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">M</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">M</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="n">fDP</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">fDP</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="mi">3</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">fDP</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">r</span>
+    <span class="k">return</span> <span class="n">fDP</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">fDPrun</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">fDPrun</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">10000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">110</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<h3>Problem: Longest common subsequence (LCS)</h3>
+<h4>Recursive solution:</h4>
+<div class="highlight"><pre><span class="n">A</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">B</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">LCSrec</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">N</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">M</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">B</span><span class="p">[</span><span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="k">return</span> <span class="mi">1</span><span class="o">+</span><span class="n">LCSrec</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">LCSrec</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">M</span><span class="p">),</span><span class="n">LCSrec</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">LCSrec</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>  
+<span class="o">&gt;&gt;</span> <span class="mi">1000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">277</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<h4>Dynamic programming</h4>
+<div class="highlight"><pre><span class="n">N</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">M</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">LCSdp</span><span class="p">():</span>
+    <span class="n">Mlcs</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c">##important, you can easily go negative in index...</span>
+                <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> 
+                    <span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span> <span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Mlcs</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">M</span><span class="p">]</span>
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">LCSdp</span><span class="p">()</span>
+<span class="o">&gt;&gt;</span> <span class="mi">10000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">47.8</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<p>but for larger values A,B</p>
+<div class="highlight"><pre><span class="n">A</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s">&quot;AAACCGTGAGTTATTCGTTCTAGAA&quot;</span><span class="p">)</span>
+<span class="n">B</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s">&quot;CACCCCTAAGGTACCTTTGGTT&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">LCSdp</span><span class="p">()</span>
+<span class="o">&gt;&gt;</span> <span class="mi">1000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">311</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<p>After the computation the resulting <code>Mlcs</code> array for sequencies <code>A=[1,4,6,8,5,3,6,8]</code> and <code>B=[4,6,6,2,1,4,5,6,8]</code> looks like this:</p>
+<div class="highlight"><pre><span class="k">[0, 4, 6, 6, 2, 1, 4, 5, 6, 8]</span>
+<span class="k">[1, 0, 0, 0, 0, 1, 1, 1, 1, 1]</span>
+<span class="k">[4, 1, 1, 1, 1, 1, 2, 2, 2, 2]</span>
+<span class="k">[6, 1, 2, 2, 2, 2, 2, 2, 3, 3]</span>
+<span class="k">[8, 1, 2, 2, 2, 2, 2, 2, 3, 4]</span>
+<span class="k">[5, 1, 2, 2, 2, 2, 2, 3, 3, 4]</span>
+<span class="k">[3, 1, 2, 2, 2, 2, 2, 3, 3, 4]</span>
+<span class="k">[6, 1, 2, 3, 3, 3, 3, 3, 4, 4]</span>
+<span class="k">[8, 1, 2, 3, 3, 3, 3, 3, 4, 5]</span>
+</pre></div>
+
+
+<p>where first column represents vector <code>A</code> and first row represents <code>B</code>.</p>
+<div class="highlight"><pre><span class="mi">0</span>   <span class="mi">4</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">2</span>   <span class="mi">1</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">8</span>   
+<span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   
+<span class="mi">4</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span><span class="o">*</span>  <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   
+<span class="mi">6</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span><span class="o">*</span>  <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   
+<span class="mi">8</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span><span class="o">*</span>  <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   
+<span class="mi">5</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span><span class="o">*</span>  <span class="mi">3</span>   <span class="mi">4</span>   
+<span class="mi">3</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span><span class="o">*</span>  <span class="mi">3</span>   <span class="mi">4</span>   
+<span class="mi">6</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span><span class="o">*</span>  <span class="mi">4</span>   
+<span class="mi">8</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span><span class="o">*</span>  
+</pre></div>
+
+
+<p>For bigger sequences</p>
+<div class="highlight"><pre><span class="n">A</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s">&quot;AAACCGTGAGTTATTCGTTCTAGAA&quot;</span><span class="p">)</span>
+<span class="n">B</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s">&quot;CACCCCTAAGGTACCTTTGGTTC&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">LCSdp</span><span class="p">()</span>
+<span class="o">&gt;&gt;</span> <span class="mi">1000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">304</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<p>and LCS is equal to 14. The recusive solution hasn't finished in the reasonable time...
+Backtrack is pretty simple: start with longest and go diagonal if <code>A[i]=B[j]</code>, stay on the longer path otherwise.</p>
+<div class="highlight"><pre><span class="mi">0</span>   <span class="n">C</span><span class="o">*</span>  <span class="n">A</span>   <span class="n">C</span>   <span class="n">C</span>   <span class="n">C</span>   <span class="n">C</span>   <span class="n">T</span>   <span class="n">A</span>   <span class="n">A</span>   <span class="n">G</span>   <span class="n">G</span>   <span class="n">T</span>   <span class="n">A</span>   <span class="n">C</span>   <span class="n">C</span>   <span class="n">T</span>   <span class="n">T</span>   <span class="n">T</span>   <span class="n">G</span>   <span class="n">G</span>   <span class="n">T</span>   <span class="n">T</span>   <span class="n">C</span>   
+<span class="n">A</span>   <span class="mi">0</span>   <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   
+<span class="n">A</span>   <span class="mi">0</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   
+<span class="n">A</span>   <span class="mi">0</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span><span class="o">*</span>  <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   
+<span class="n">C</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span><span class="o">*</span>  <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   
+<span class="n">C</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span><span class="o">*</span>  <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   
+<span class="n">G</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span><span class="o">*</span>  <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span><span class="o">*</span>  <span class="mi">4</span><span class="o">*</span>  <span class="mi">4</span><span class="o">*</span>  <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   
+<span class="n">G</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span><span class="o">*</span>  <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   
+<span class="n">A</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span><span class="o">*</span>  <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   
+<span class="n">G</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span><span class="o">*</span>  <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span><span class="o">*</span>  <span class="mi">7</span><span class="o">*</span>  <span class="mi">7</span><span class="o">*</span>  <span class="mi">7</span><span class="o">*</span>  <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">9</span>   
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span><span class="o">*</span>  <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  
+<span class="n">A</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span><span class="o">*</span>  <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span><span class="o">*</span>  <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span><span class="o">*</span> <span class="mi">10</span><span class="o">*</span> <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">10</span>  
+<span class="n">C</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">10</span><span class="o">*</span> <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">11</span>  
+<span class="n">G</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span><span class="o">*</span> <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span><span class="o">*</span> <span class="mi">12</span>  <span class="mi">12</span>  
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">13</span><span class="o">*</span> <span class="mi">13</span>  
+<span class="n">C</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">14</span><span class="o">*</span> 
+<span class="n">T</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">14</span><span class="o">*</span> 
+<span class="n">A</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">14</span><span class="o">*</span> 
+<span class="n">G</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">14</span><span class="o">*</span> 
+<span class="n">A</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">14</span><span class="o">*</span> 
+<span class="n">A</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">9</span>   <span class="mi">10</span>  <span class="mi">11</span>  <span class="mi">11</span>  <span class="mi">12</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">13</span>  <span class="mi">14</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">i</span><span class="o">=</span><span class="n">N</span>
+<span class="n">j</span><span class="o">=</span><span class="n">M</span>
+<span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lcs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+        <span class="n">lcs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">i</span><span class="o">-=</span><span class="mi">1</span>
+        <span class="n">j</span><span class="o">-=</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">&lt;</span><span class="n">Mlcs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">j</span><span class="o">-=</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span><span class="o">-=</span><span class="mi">1</span>
+<span class="n">lcs</span>
+<span class="o">&gt;&gt;</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;G&#39;</span><span class="p">,</span> <span class="s">&#39;G&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;G&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<h3>Knapsack problem</h3>
+<p>Given weights <code>w[i]</code> and values <code>v[i]</code> of items, put maximum total value into the sack of the total weight less than or equal to <code>W</code>.</p>
+<h4>Recursive solution</h4>
+<p>Idea: if we know the solution for the weight W, taking one item <code>v[i]</code> from the sack gives solution for <code>W-w[i]</code>.</p>
+<div class="highlight"><pre><span class="n">N</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">vi</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">wi</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">KnapsackRec</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">W</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">r</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">W</span><span class="o">-</span><span class="n">wi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">vi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">KnapsackRec</span><span class="p">(</span><span class="n">W</span><span class="o">-</span><span class="n">wi</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">r</span>
+<span class="o">&gt;&gt;</span> <span class="n">KnapsackRec</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">20</span>
+</pre></div>
+
+
+<h4>DP solution, bottom-up</h4>
+<p>The same, but solution is built starting from trivial case <code>W=0</code>, and increasing.</p>
+<div class="highlight"><pre><span class="n">N</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">vi</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">wi</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">Knapsack</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+    <span class="n">mi</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">)]</span>
+    <span class="n">mi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>         
+            <span class="k">if</span> <span class="n">w</span><span class="o">-</span><span class="n">wi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">mi</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">w</span><span class="p">],</span><span class="n">vi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">mi</span><span class="p">[</span><span class="n">w</span><span class="o">-</span><span class="n">wi</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+    <span class="k">print</span> <span class="n">mi</span>
+<span class="o">&gt;&gt;</span> <span class="n">Knapsack</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+		</div>
+	</body>
+</html>
