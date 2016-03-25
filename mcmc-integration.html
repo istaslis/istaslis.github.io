@@ -14,13 +14,13 @@
 		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
 		<link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Abril+Fatface|PT+Sans:400,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet">
 
-		<link rel="stylesheet" href="/theme/css/poole.css" />
-		<link rel="stylesheet" href="/theme/css/hyde.css" />
-		<link rel="stylesheet" href="/theme/css/syntax.css" />
+		<link rel="stylesheet" href="istaslis.github.io/theme/css/poole.css" />
+		<link rel="stylesheet" href="istaslis.github.io/theme/css/hyde.css" />
+		<link rel="stylesheet" href="istaslis.github.io/theme/css/syntax.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-		<link rel='shortcut icon' type='image/x-icon' href='/theme/favicon.ico' />
-		<link rel='icon' type='image/x-icon' href='/theme/favicon.ico' />
+		<link rel='shortcut icon' type='image/x-icon' href='istaslis.github.io/theme/favicon.ico' />
+		<link rel='icon' type='image/x-icon' href='istaslis.github.io/theme/favicon.ico' />
 
 		<!-- RSS -->
 		<link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
@@ -40,7 +40,7 @@
 
 			<h1>
 				<a href="/">
-					<img class="profile-picture" src="/images/logo.png">
+					<img class="profile-picture" src="istaslis.github.io/images/logo.png">
 					quriosity
 				</a>
 			</h1>
@@ -54,21 +54,21 @@
 			<p></p>
 
             <!-- <li class="list-group-item"> -->
-            <a href="/"><!-- <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a> -->
+            <a href="istaslis.github.io/"><!-- <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a> -->
                 <!-- <ul class="list-group" id="categories"> -->
                   <!--   <li class="list-group-item"> -->
-                       <p> <a href="/category/coding.html">
+                       <p> <a href="istaslis.github.io/category/coding.html">
                             <!-- <i class="fa fa-folder-open fa-lg"></i>  -->Coding
                         </a></p>
                    <!--  </li> -->
                   <!--   <li class="list-group-item"> -->
-                       <p> <a href="/category/misc.html">
-                            <!-- <i class="fa fa-folder-open fa-lg"></i>  -->misc
+                       <p> <a href="istaslis.github.io/category/review.html">
+                            <!-- <i class="fa fa-folder-open fa-lg"></i>  -->Review
                         </a></p>
                    <!--  </li> -->
                   <!--   <li class="list-group-item"> -->
-                       <p> <a href="/category/review.html">
-                            <!-- <i class="fa fa-folder-open fa-lg"></i>  -->Review
+                       <p> <a href="istaslis.github.io/category/statistics.html">
+                            <!-- <i class="fa fa-folder-open fa-lg"></i>  -->Statistics
                         </a></p>
                    <!--  </li> -->
                 <!-- </ul> -->
@@ -88,17 +88,16 @@
 			<a class="sidebar-nav-item" href="https://www.facebook.com/stas.lisniak">
 				<i class="fa fa-facebook"></i>
 			</a>
-			<a class="sidebar-nav-item" href="">
+			<a class="sidebar-nav-item" href="feeds/all.atom.xml">
 				<i class="fa fa-feed"></i>
 			</a>
 		</nav>
 	</div>
 </div>		<div class="content container">
 <div class="post">
-	<h1 class="post-title">"Welcome to MCMC!"</h1>
-	<span class="post-date">Sun 28 February 2016</span>
-	<h1>MCMC integration</h1>
-<h2>General thoughts on integration</h2>
+	<h1 class="post-title">MCMC integration</h1>
+	<span class="post-date">Tue 05 January 2016</span>
+	<h2>General thoughts on integration</h2>
 <p>Markov chain Monte-Carlo methods entered almost every aspect of the science where simulations are needed. Basically, the problem they solve is to generate random numbers according to some p.d.f. And there are many practical reasons one needs to do that - from finding energy minimum of complex system to numerical integration, which I am going to discuss here.</p>
 <p>In general, we have to calculate the following: $$\int_{a}^{b} f(x_1,x_2,...,x_N) dx_{1}dx_{2}...dx_{N}$$
 When the number of dimensions N is small enough, we can calculate it using standard numerical techniques. How small is small enough? Let's illustrate with $$\int_{0}^{2\pi} \prod_{i=1}^{k} \left| \frac{sin(x_i)}{x_i} \right| dx_i $$
@@ -124,7 +123,7 @@ for some values of k. One can easily note the cheating here - integral is easily
 </pre></div>
 
 
-<p><img alt="png" src="MCMC_files/MCMC_2_1.png" /></p>
+<p><img alt="png" src="images/MCMC_2_1.png" /></p>
 <div class="highlight"><pre><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="n">mx</span><span class="p">,</span><span class="n">my</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 <span class="n">z</span><span class="o">=</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span><span class="o">/</span><span class="n">mx</span><span class="p">)</span><span class="o">*</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">my</span><span class="p">)</span><span class="o">/</span><span class="n">my</span><span class="p">)</span>
@@ -138,7 +137,7 @@ for some values of k. One can easily note the cheating here - integral is easily
 </pre></div>
 
 
-<p><img alt="png" src="MCMC_files/MCMC_3_0.png" /></p>
+<p><img alt="png" src="images/MCMC_3_0.png" /></p>
 <div class="highlight"><pre><span class="n">def</span> <span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">:</span>
     <span class="k">return</span>  <span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">x1</span><span class="p">)</span>
 <span class="o">%</span><span class="n">timeit</span> <span class="n">integrate</span><span class="p">.</span><span class="n">quad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span>
